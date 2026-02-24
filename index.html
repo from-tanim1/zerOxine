@@ -3,143 +3,675 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>zerOxine | Under Maintenance</title>
+    <title>zerOxine · evolution in progress</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         :root {
             --primary: #00ffcc;
+            --primary-dark: #00cca3;
             --accent: #7000ff;
-            --bg: #0a0a0b;
-            --glass: rgba(255, 255, 255, 0.05);
+            --accent-glow: rgba(112, 0, 255, 0.5);
+            --bg: #0a0a0f;
+            --surface: #111116;
+            --surface-light: #1c1c24;
+            --text: #ffffff;
+            --text-secondary: #b0b0c0;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.05);
+            --gradient-1: linear-gradient(135deg, #00ffcc, #7000ff);
+            --gradient-2: linear-gradient(45deg, #0a0a0f, #1a1a24);
         }
 
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
-            color: white;
-            margin: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
             line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
         }
 
-        /* Maintenance Banner */
+        /* animated background grid */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(var(--glass-border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--glass-border) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask: radial-gradient(circle at 50% 50%, black, transparent 80%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* floating orbs */
+        .orb {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: var(--accent);
+            filter: blur(100px);
+            opacity: 0.15;
+            animation: float 20s infinite ease-in-out;
+            z-index: 0;
+        }
+
+        .orb-1 {
+            top: -100px;
+            right: -100px;
+            background: var(--primary);
+            animation-delay: -5s;
+        }
+
+        .orb-2 {
+            bottom: -100px;
+            left: -100px;
+            background: var(--accent);
+            animation-delay: -10s;
+            width: 400px;
+            height: 400px;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(30px, 30px) scale(1.1); }
+        }
+
+        .wrapper {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* maintenance header with glassmorphism */
         .maintenance-header {
             text-align: center;
-            padding: 80px 20px;
-            background: linear-gradient(180deg, #111 0%, var(--bg) 100%);
+            padding: 120px 20px 80px;
+            position: relative;
         }
 
-        .maintenance-header h1 { font-size: 4rem; margin: 0; letter-spacing: -2px; }
-        .status-tag { 
-            background: #ff4757; color: white; padding: 5px 15px; 
-            border-radius: 20px; font-size: 0.8rem; font-weight: bold;
+        .status-wrapper {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 71, 87, 0.1);
+            border: 1px solid rgba(255, 71, 87, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 8px 24px 8px 20px;
+            border-radius: 60px;
+            margin-bottom: 40px;
         }
 
-        /* PDF Panel Section */
-        .pdf-section Math          max-width: 1000px;
-            margin: 0 auto;
-            padding: 40px 20px;
+        .status-tag {
+            background: #ff4757;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .status-text {
+            color: #ff8a8a;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .glitch-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .maintenance-header h1 {
+            font-size: clamp(4rem, 15vw, 7rem);
+            font-weight: 800;
+            letter-spacing: -4px;
+            margin: 0 0 20px;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            text-shadow: 0 0 30px rgba(0, 255, 204, 0.3);
+            animation: glitch 10s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 100% { transform: skew(0deg); }
+            96% { transform: skew(0deg); }
+            97% { transform: skew(2deg); }
+            98% { transform: skew(-2deg); }
+            99% { transform: skew(0deg); }
+        }
+
+        .maintenance-header h1::before,
+        .maintenance-header h1::after {
+            content: 'zerOxine';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .maintenance-header h1::before {
+            animation: glitch-left 4s infinite;
+            color: #ff00ff;
+            -webkit-text-fill-color: #ff00ff;
+            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+            transform: translate(-2px, -2px);
+            opacity: 0.8;
+        }
+
+        .maintenance-header h1::after {
+            animation: glitch-right 4s infinite;
+            color: #00ffff;
+            -webkit-text-fill-color: #00ffff;
+            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+            transform: translate(2px, 2px);
+            opacity: 0.8;
+        }
+
+        @keyframes glitch-left {
+            0%, 100% { transform: translate(-2px, -2px); }
+            95% { transform: translate(-2px, -2px); }
+            96% { transform: translate(-4px, -3px); }
+            97% { transform: translate(-1px, -1px); }
+        }
+
+        @keyframes glitch-right {
+            0%, 100% { transform: translate(2px, 2px); }
+            95% { transform: translate(2px, 2px); }
+            96% { transform: translate(4px, 3px); }
+            97% { transform: translate(1px, 1px); }
+        }
+
+        .lead-text {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto 20px;
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--glass-border);
+        }
+
+        .countdown-pulse {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0,255,204,0.1);
+            border: 1px solid rgba(0,255,204,0.2);
+            padding: 12px 28px;
+            border-radius: 50px;
+            margin-top: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .pulse-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(0.8); }
+        }
+
+        /* pdf section - modern cards */
+        .pdf-section {
+            margin: 80px 0;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .section-header h2 {
+            font-size: 2.8rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #fff, #b0b0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+
+        .section-badge {
+            background: var(--surface-light);
+            padding: 10px 24px;
+            border-radius: 40px;
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px);
+            color: var(--primary);
+            font-weight: 600;
         }
 
         .pdf-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
         }
 
         .pdf-card {
-            background: var(--glass);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 20px;
-            border-radius: 12px;
-            transition: transform 0.3s ease;
+            background: var(--surface);
+            border: 1px solid var(--glass-border);
+            border-radius: 32px;
+            padding: 32px;
+            backdrop-filter: blur(20px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
         }
 
-        .pdf-card:hover { transform: translateY(-5px); border-color: var(--primary); }
-        .pdf-card h3 { margin-top: 0; color: var(--primary); }
+        .pdf-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-1);
+            opacity: 0;
+            transition: opacity 0.4s;
+            z-index: 0;
+        }
+
+        .pdf-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            border-color: transparent;
+            box-shadow: 0 20px 40px rgba(0,255,204,0.2);
+        }
+
+        .pdf-card:hover::before {
+            opacity: 0.05;
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 20px var(--primary));
+        }
+
+        .pdf-card h3 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--primary);
+            position: relative;
+            z-index: 1;
+        }
+
+        .pdf-card p {
+            color: var(--text-secondary);
+            margin-bottom: 25px;
+            font-size: 1rem;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            z-index: 1;
+        }
 
         .btn-download {
-            display: inline-block;
-            margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
             color: var(--primary);
             text-decoration: none;
             font-weight: 600;
-            border-bottom: 1px solid var(--primary);
+            padding: 12px 0;
+            transition: 0.3s;
+            border-bottom: 2px solid transparent;
         }
 
-        /* Team Profiles Footer */
-        .team-footer {
-            margin-top: 100px;
-            padding: 60px 20px;
-            background: #050505;
+        .btn-download:hover {
+            gap: 15px;
+            color: white;
+            border-bottom-color: var(--primary);
+        }
+
+        .file-meta {
+            color: #4f4f6a;
+            font-size: 0.85rem;
+            background: rgba(255,255,255,0.03);
+            padding: 6px 12px;
+            border-radius: 30px;
+        }
+
+        /* team section - futuristic with ALWAYS COLORFUL images */
+        .team-section {
+            margin: 120px 0 60px;
+        }
+
+        .team-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .team-header h2 {
+            font-size: 2.5rem;
+            color: transparent;
+            -webkit-text-stroke: 2px var(--accent);
+            text-stroke: 2px var(--accent);
+            letter-spacing: 2px;
+        }
+
+        .team-grid {
             display: flex;
             justify-content: center;
-            gap: 50px;
+            gap: 60px;
             flex-wrap: wrap;
         }
 
-        .profile-box {
+        .profile-card {
+            background: var(--surface);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            padding: 40px 40px 50px;
+            width: 340px;
             text-align: center;
-            width: 280px;
+            backdrop-filter: blur(20px);
+            transition: 0.4s;
+            position: relative;
+            overflow: hidden;
         }
 
-        .profile-box img {
-            width: 120px;
-            height: 120px;
-            border-radius: 20px;
-            filter: grayscale(100%);
+        .profile-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 50% 50%, var(--accent-glow), transparent 70%);
+            opacity: 0;
+            transition: 0.6s;
+            z-index: 0;
+        }
+
+        .profile-card:hover::after {
+            opacity: 0.1;
+        }
+
+        .profile-card:hover {
+            transform: scale(1.05);
+            border-color: var(--accent);
+            box-shadow: 0 0 50px rgba(112, 0, 255, 0.3);
+        }
+
+        .avatar-frame {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 25px;
+            position: relative;
+            border-radius: 30px;
+            overflow: hidden;
+            border: 3px solid transparent;
+            background: var(--gradient-1);
+            padding: 3px;
+            box-shadow: 0 0 30px rgba(0, 255, 204, 0.3);
+            animation: frame-pulse 3s infinite alternate;
+        }
+
+        @keyframes frame-pulse {
+            0% { box-shadow: 0 0 20px rgba(0, 255, 204, 0.3); }
+            100% { box-shadow: 0 0 40px rgba(112, 0, 255, 0.6); }
+        }
+
+        .avatar-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 28px;
+            /* NO GRAYSCALE - always colorful */
+            filter: brightness(1.05) contrast(1.1);
             transition: 0.5s;
-            border: 1px solid #333;
+            display: block;
         }
 
-        .profile-box:hover img { filter: grayscale(0%); border-color: var(--accent); }
+        .profile-card:hover .avatar-frame img {
+            transform: scale(1.08);
+            filter: brightness(1.2) contrast(1.2) drop-shadow(0 0 15px var(--primary));
+        }
+
+        .profile-card h3 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #fff, #d0d0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .profile-role {
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px var(--primary);
+        }
 
         .github-link {
-            color: #888;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.03);
+            padding: 12px 28px;
+            border-radius: 40px;
+            color: var(--text-secondary);
             text-decoration: none;
-            font-size: 0.9rem;
-            display: block;
-            margin-top: 10px;
+            border: 1px solid var(--glass-border);
+            transition: 0.3s;
+            font-size: 0.95rem;
+            position: relative;
+            z-index: 2;
         }
 
-        .github-link:hover { color: white; }
+        .github-link:hover {
+            background: var(--accent);
+            color: white;
+            border-color: var(--accent);
+            box-shadow: 0 0 30px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+
+        .footer-note {
+            text-align: center;
+            padding: 40px 0 30px;
+            color: #3f3f55;
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255,255,255,0.03);
+            margin-top: 80px;
+            position: relative;
+        }
+
+        .cyber-line {
+            height: 2px;
+            background: var(--gradient-1);
+            width: 100%;
+            opacity: 0.3;
+            margin: 40px 0;
+        }
+
+        /* responsive */
+        @media (max-width: 700px) {
+            .maintenance-header h1 {
+                font-size: 4rem;
+                letter-spacing: -2px;
+            }
+            .lead-text {
+                font-size: 1.2rem;
+            }
+            .section-header h2 {
+                font-size: 2rem;
+            }
+        }
     </style>
 </head>
 <body>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
 
-    <div class="maintenance-header">
-        <span class="status-tag">SYSTEM OFFLINE</span>
-        <h1>zerOxine</h1>
-        <p>We are upgrading our infrastructure. Access current resources below.</p>
-    </div>
+    <div class="wrapper">
+        <!-- maintenance header with glitch effect -->
+        <div class="maintenance-header">
+            <div class="status-wrapper">
+                <span class="status-tag">v.2.0</span>
+                <span class="status-text">evolution protocol · offline</span>
+            </div>
+            
+            <div class="glitch-wrapper">
+                <h1>zerOxine</h1>
+            </div>
+            
+            <p class="lead-text">undergoing quantum infrastructure upgrade — core knowledge nodes remain accessible</p>
+            
+            <div class="countdown-pulse">
+                <span class="pulse-dot"></span>
+                <span>estimated completion: 48h · 23m</span>
+            </div>
+        </div>
 
-    <section class="pdf-section">
-        <h2>Question & Answer Sheets</h2>
-        <div class="pdf-grid">
-            <div class="pdf-card">
-                <h3>Final Exam - Physics</h3>
-                <p>Sheets + Answer Keys included.</p>
-                <a href="https://pdfhost.io/v/JFAHe89D6q_Electromagnetism-SSC" class="btn-download" target="_blank">View PDF →</a>
+        <!-- pdf resources section -->
+        <section class="pdf-section">
+            <div class="section-header">
+                <h2>resource nexus</h2>
+                <span class="section-badge">📄 4 active sheets</span>
             </div>
 
-            
-        </div>
-    </section>
+            <div class="pdf-grid">
+                <!-- physics card (original) -->
+                <div class="pdf-card">
+                    <div class="card-icon">⚡</div>
+                    <h3>Physics · final</h3>
+                    <p>complete electromagnetism, optics & modern physics — annotated solutions & examiner's notes.</p>
+                    <div class="card-footer">
+                        <a href="https://pdfhost.io/v/JFAHe89D6q_Electromagnetism-SSC" class="btn-download" target="_blank" rel="noopener">
+                            access <span>→</span>
+                        </a>
+                        <span class="file-meta">PDF · 12 MB</span>
+                    </div>
+                </div>
 
-    <footer class="team-footer">
-        <div class="profile-box">
-            <img src="https://raw.githubusercontent.com/from-tanim1/zerOxine/refs/heads/main/Resources/Web/20260224_222312.png" alt="Owner">
-            <h3>The Owner</h3>
-            <p>Founder of zerOxine</p>
-            <a href="https://github.com/from-tanim" class="github-link">github.com/from-tanim</a>
-        </div>
+                <!-- enhanced cards with better metadata -->
+                <div class="pdf-card">
+                    <div class="card-icon">📐</div>
+                    <h3>Mathematics</h3>
+                    <p>advanced calculus, linear algebra & differential equations — with stepwise answer keys.</p>
+                    <div class="card-footer">
+                        <a href="#" class="btn-download" onclick="return false;">preview <span>→</span></a>
+                        <span class="file-meta">PDF · 8 MB</span>
+                    </div>
+                </div>
 
-        <div class="profile-box">
-            <img src="https://raw.githubusercontent.com/from-tanim1/zerOxine/refs/heads/main/Resources/Web/20260224_222312.png" alt="Developer">
-            <h3>Lead Developer</h3>
-            <p>System Architect</p>
-            <a href="https://github.com/from-tanim" class="github-link">github.com/from-tanim</a>
-        </div>
-    </footer>
+                <div class="pdf-card">
+                    <div class="card-icon">🧪</div>
+                    <h3>Chemistry</h3>
+                    <p>reaction mechanisms, named reactions, spectroscopy problems & solution bank.</p>
+                    <div class="card-footer">
+                        <a href="#" class="btn-download" onclick="return false;">preview <span>→</span></a>
+                        <span class="file-meta">PDF · 15 MB</span>
+                    </div>
+                </div>
 
+                
+                </div>
+            </div>
+        </section>
+
+        <div class="cyber-line"></div>
+
+        <!-- team section - ALWAYS COLORFUL images -->
+        <section class="team-section">
+            <div class="team-header">
+                <h2>ARCHITECTS</h2>
+                <p style="color: #6f6f8f;">The minds behind zerOxine</p>
+            </div>
+
+            <div class="team-grid">
+                <div class="profile-card">
+                    <div class="avatar-frame">
+                        <img src="https://raw.githubusercontent.com/from-tanim1/zerOxine/refs/heads/main/Resources/Web/20260224_222312.png" alt="Tanim — founder">
+                    </div>
+                    <h3>THE OWNER</h3>
+                    <div class="profile-role">founder · vision</div>
+                    <a href="https://github.com/from-tanim" class="github-link" target="_blank" rel="noopener">
+                        <span>🐙</span> github.com/from-tanim
+                    </a>
+                </div>
+
+                <div class="profile-card">
+                    <div class="avatar-frame">
+                        <img src="https://raw.githubusercontent.com/from-tanim1/zerOxine/refs/heads/main/Resources/Web/20260224_222312.png" alt="Lead developer">
+                    </div>
+                    <h3>lead dev</h3>
+                    <div class="profile-role">SYSTEM ARCHITECT </div>
+                    <a href="https://github.com/from-tanim" class="github-link" target="_blank" rel="noopener">
+                        <span>⚡</span> github.com/from-tanim
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- footer note -->
+        <div class="footer-note">
+            <span>✦ zerOxine core · maintenance mode 2026 ✦</span><br>
+            <span style="font-size: 0.8rem; opacity: 0.5;">decentralized knowledge · coming back stronger</span>
+        </div>
+    </div>
+
+    <!-- small script for placeholder links feedback -->
+    <script>
+        (function() {
+            const inertLinks = document.querySelectorAll('.btn-download[href="#"]');
+            inertLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    link.style.opacity = '0.6';
+                    link.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        link.style.opacity = '1';
+                        link.style.transform = 'scale(1)';
+                    }, 200);
+                });
+            });
+        })();
+    </script>
 </body>
     </html>
