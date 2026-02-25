@@ -1704,81 +1704,118 @@
     </div>
 
     <!-- small script for placeholder links + PWA install logic -->
-    <script>
-        (function() {
-            // Placeholder links feedback
-            const inertLinks = document.querySelectorAll('.btn-download[href="#"]');
-            inertLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    link.style.opacity = '0.6';
-                    link.style.transform = 'scale(0.95)';
-                    setTimeout(() => {
-                        link.style.opacity = '1';
-                        link.style.transform = 'scale(1)';
-                    }, 200);
-                });
-            });
-
-            // --- PWA INSTALL LOGIC ---
-            let deferredPrompt;
-            const installButton = document.getElementById('install-button');
-
-            // 1. Listen for the 'beforeinstallprompt' event
-            window.addEventListener('beforeinstallprompt', (e) => {
-                console.log('beforeinstallprompt fired');
-                // Prevent the browser's default mini-infobar from appearing
+<script>
+    (function() {
+        // Your existing code for placeholder links
+        const inertLinks = document.querySelectorAll('.btn-download[href="#"]');
+        inertLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
                 e.preventDefault();
-                // Save the event so we can trigger it later
-                deferredPrompt = e;
-                // Show our custom install button by removing hidden class
-                if (installButton) {
-                    installButton.classList.remove('hidden');
-                    console.log('Install button is now visible');
-                }
+                link.style.opacity = '0.6';
+                link.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    link.style.opacity = '1';
+                    link.style.transform = 'scale(1)';
+                }, 200);
             });
+        });
 
-            // 2. Add a click event listener to our custom install button
+        // --- PWA INSTALL LOGIC (your existing code) ---
+        let deferredPrompt;
+        const installButton = document.getElementById('install-button');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('beforeinstallprompt fired');
+            e.preventDefault();
+            deferredPrompt = e;
             if (installButton) {
-                installButton.addEventListener('click', async () => {
-                    console.log('Install button clicked');
-                    if (!deferredPrompt) {
-                        console.log('No deferred prompt available');
-                        return;
-                    }
-
-                    // Show the browser's install prompt
-                    deferredPrompt.prompt();
-
-                    // Wait for the user to respond to the prompt
-                    const { outcome } = await deferredPrompt.userChoice;
-                    console.log(`User response to install prompt: ${outcome}`);
-
-                    // We've used the prompt, we can't use it again. Discard it.
-                    deferredPrompt = null;
-
-                    // Hide the install button again, as it's no longer needed
-                    installButton.classList.add('hidden');
-                });
+                installButton.classList.remove('hidden');
+                console.log('Install button is now visible');
             }
+        });
 
-            // 3. Listen for the 'appinstalled' event (optional, for analytics)
-            window.addEventListener('appinstalled', () => {
-                console.log('zerOxine was installed.');
-                // Hide the button just in case it's still visible
-                if (installButton) {
-                    installButton.classList.add('hidden');
+        if (installButton) {
+            installButton.addEventListener('click', async () => {
+                console.log('Install button clicked');
+                if (!deferredPrompt) {
+                    console.log('No deferred prompt available');
+                    return;
                 }
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to install prompt: ${outcome}`);
+                deferredPrompt = null;
+                installButton.classList.add('hidden');
+            });
+        }
+
+        window.addEventListener('appinstalled', () => {
+            console.log('zerOxine was installed.');
+            if (installButton) {
+                installButton.classList.add('hidden');
+            }
+        });
+
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            console.log('App is already being used in standalone mode (installed).');
+            if (installButton) {
+                installButton.classList.add('hidden');
+            }
+        }
+
+        // --- NEW: SERVICE WORKER REGISTRATION ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/Assets/sw.js')
+                    .then(function(registration) {
+                        console.log('✅ Service Worker registered successfully with scope:', registration.scope);
+                        
+                        // Check for updates
+                        registration.addEventListener('updatefound', () => {
+                            const newWorker = registration.installing;
+                            console.log('🆕 New service worker installing...');
+                            
+                            newWorker.addEventListener('statechange', () => {
+                                console.log('🔄 Service worker state:', newWorker.state);
+                                
+                                // When new worker is installed and waiting
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    console.log('🆕 New version available! Refresh to update.');
+                                    // You could show a notification here
+                                }
+                            });
+                        });
+                    })
+                    .catch(function(error) {
+                        console.log('❌ Service Worker registration failed:', error);
+                    });
             });
 
-            // 4. Optional: Hide button if the user already has a related app installed
-            if (window.matchMedia('(display-mode: standalone)').matches) {
-                console.log('App is already being used in standalone mode (installed).');
-                if (installButton) {
-                    installButton.classList.add('hidden');
-                }
+            // Optional: Handle service worker updates
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                console.log('🔄 Service worker controller changed. Page will reload.');
+                window.location.reload();
+            });
+        } else {
+            console.log('❌ Service Workers are not supported in this browser.');
+        }
+
+        // --- OPTIONAL: Check online/offline status ---
+        function updateOnlineStatus() {
+            if (navigator.onLine) {
+                document.body.classList.remove('offline');
+                console.log('📶 App is online');
+            } else {
+                document.body.classList.add('offline');
+                console.log('📴 App is offline');
             }
-        })();
-    </script>
+        }
+
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+        updateOnlineStatus(); // Check initial status
+
+    })();
+</script>
 </body>
     </html>
