@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- PWA manifest link -->
+    <link rel="manifest" href="/manifest.json">
     <title>zerOxine · Evolution in progress</title>
     <style>
         * {
@@ -511,6 +513,42 @@
             transform: translateY(-2px);
         }
 
+        /* PWA install button styling (matches site aesthetics) */
+        .install-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: linear-gradient(135deg, rgba(0,255,204,0.15), rgba(112,0,255,0.15));
+            border: 2px solid var(--primary);
+            backdrop-filter: blur(10px);
+            padding: 16px 40px;
+            border-radius: 60px;
+            margin: 20px auto 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 0 30px rgba(0,255,204,0.2);
+            width: fit-content;
+            border: 1px solid rgba(0,255,204,0.3);
+            position: relative;
+            z-index: 10;
+        }
+
+        .install-btn:hover {
+            background: linear-gradient(135deg, rgba(0,255,204,0.25), rgba(112,0,255,0.25));
+            box-shadow: 0 0 50px rgba(0,255,204,0.4);
+            transform: translateY(-3px);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .install-btn.hidden {
+            display: none;
+        }
+
         .footer-note {
             text-align: center;
             padding: 40px 0 30px;
@@ -568,6 +606,13 @@
             </div>
         </div>
 
+        <!-- PWA install button (initially hidden) -->
+        <div style="display: flex; justify-content: center;">
+            <button id="install-button" class="install-btn hidden">
+                <span>⬇️</span> Install zerOxine as App <span>✨</span>
+            </button>
+        </div>
+
         <!-- pdf resources section -->
         <section class="pdf-section">
             <div class="section-header">
@@ -610,7 +655,15 @@
                     </div>
                 </div>
 
-                
+                <!-- added fourth card to match badge (4 sheets) -->
+                <div class="pdf-card">
+                    <div class="card-icon">🧬</div>
+                    <h3>Biology · core</h3>
+                    <p>molecular biology, genetics & metabolism diagrams — high-yield fact sheets.</p>
+                    <div class="card-footer">
+                        <a href="#" class="btn-download" onclick="return false;">preview <span>→</span></a>
+                        <span class="file-meta">PDF · 10 MB</span>
+                    </div>
                 </div>
             </div>
         </section>
@@ -620,8 +673,8 @@
         <!-- team section - ALWAYS COLORFUL images -->
         <section class="team-section">
             <div class="team-header">
-                <h2>ARCHITECTS</h2>
-                <p style="color: #6f6f8f;">The minds behind zerOxine</p>
+                
+                <h2 style="color: #6f6f8f;">The minds behind zerOxine</h2>
             </div>
 
             <div class="team-grid">
@@ -630,7 +683,7 @@
                         <img src="https://raw.githubusercontent.com/from-tanim1/zerOxine/refs/heads/main/Resources/Web/20260224_222312.png" alt="Tanim — founder">
                     </div>
                     <h3>THE OWNER</h3>
-                    <div class="profile-role">founder · vision</div>
+                    <div class="profile-role">Founder · vision</div>
                     <a href="https://github.com/from-tanim" class="github-link" target="_blank" rel="noopener">
                         <span>🐙</span> github.com/from-tanim
                     </a>
@@ -640,8 +693,8 @@
                     <div class="avatar-frame">
                         <img src="https://raw.githubusercontent.com/from-tanim1/zerOxine/refs/heads/main/Resources/Web/20260224_222312.png" alt="Lead developer">
                     </div>
-                    <h3>lead dev</h3>
-                    <div class="profile-role">SYSTEM ARCHITECT </div>
+                    <h3>Lead dev</h3>
+                    <div class="profile-role">SYSTEM ARCHITECT</div>
                     <a href="https://github.com/from-tanim" class="github-link" target="_blank" rel="noopener">
                         <span>⚡</span> github.com/from-tanim
                     </a>
@@ -651,14 +704,15 @@
 
         <!-- footer note -->
         <div class="footer-note">
-            <span>✦ zerOxine core · maintenance mode 2026 ✦</span><br>
-            <span style="font-size: 0.8rem; opacity: 0.5;">decentralized knowledge · coming back stronger</span>
+            <span>✦ zerOxine core · Maintenance mode 2026 ✦</span><br>
+            <span style="font-size: 0.8rem; opacity: 0.5;">Decentralized knowledge · Coming back stronger</span>
         </div>
     </div>
 
-    <!-- small script for placeholder links feedback -->
+    <!-- small script for placeholder links + PWA install logic -->
     <script>
         (function() {
+            // Placeholder links feedback
             const inertLinks = document.querySelectorAll('.btn-download[href="#"]');
             inertLinks.forEach(link => {
                 link.addEventListener('click', (e) => {
@@ -671,6 +725,65 @@
                     }, 200);
                 });
             });
+
+            // --- PWA INSTALL LOGIC ---
+            let deferredPrompt;
+            const installButton = document.getElementById('install-button');
+
+            // 1. Listen for the 'beforeinstallprompt' event
+            window.addEventListener('beforeinstallprompt', (e) => {
+                console.log('beforeinstallprompt fired');
+                // Prevent the browser's default mini-infobar from appearing
+                e.preventDefault();
+                // Save the event so we can trigger it later
+                deferredPrompt = e;
+                // Show our custom install button by removing hidden class
+                if (installButton) {
+                    installButton.classList.remove('hidden');
+                    console.log('Install button is now visible');
+                }
+            });
+
+            // 2. Add a click event listener to our custom install button
+            if (installButton) {
+                installButton.addEventListener('click', async () => {
+                    console.log('Install button clicked');
+                    if (!deferredPrompt) {
+                        console.log('No deferred prompt available');
+                        return;
+                    }
+
+                    // Show the browser's install prompt
+                    deferredPrompt.prompt();
+
+                    // Wait for the user to respond to the prompt
+                    const { outcome } = await deferredPrompt.userChoice;
+                    console.log(`User response to install prompt: ${outcome}`);
+
+                    // We've used the prompt, we can't use it again. Discard it.
+                    deferredPrompt = null;
+
+                    // Hide the install button again, as it's no longer needed
+                    installButton.classList.add('hidden');
+                });
+            }
+
+            // 3. Listen for the 'appinstalled' event (optional, for analytics)
+            window.addEventListener('appinstalled', () => {
+                console.log('zerOxine was installed.');
+                // Hide the button just in case it's still visible
+                if (installButton) {
+                    installButton.classList.add('hidden');
+                }
+            });
+
+            // 4. Optional: Hide button if the user already has a related app installed
+            if (window.matchMedia('(display-mode: standalone)').matches) {
+                console.log('App is already being used in standalone mode (installed).');
+                if (installButton) {
+                    installButton.classList.add('hidden');
+                }
+            }
         })();
     </script>
 </body>
