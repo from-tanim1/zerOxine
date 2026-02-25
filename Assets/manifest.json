@@ -1,27 +1,64 @@
 {
-  "name": "zerOxine",
+  "name": "zerOxine - Evolution in Progress",
   "short_name": "zerOxine",
-  "start_url": "https://zeroxine.vercel.app/",
-  "scope": "/",
+  "description": "Quantum knowledge infrastructure — core nodes accessible during evolution",
+  "theme_color": "#00ffcc",
+  "background_color": "#0a0a0f",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#4caf50",
-  "description": "zerOxine - edu",
+  "display_override": ["window-controls-overlay", "fullscreen", "minimal-ui"],
+  "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
+  "id": "/",
   "icons": [
     {
-      "src": "zerOxine.png",
-      "sizes": "192x192",
-      "type": "image/png"
+      "src": "https://raw.githubusercontent.com/from-tanim1/zerOxine/refs/heads/main/Assets/zerOxine.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
     },
     {
-      "src": "zerOxine.png",
-      "sizes": "512x512",
-      "type": "image/png"
+      "src": "https://raw.githubusercontent.com/from-tanim1/zerOxine/refs/heads/main/Assets/zerOxine.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
-  "orientation": "portrait-primary",
-  "categories": [
-    "education",
-    "productivity"
-  ]
+  "screenshots": [
+    {
+      "src": "https://raw.githubusercontent.com/from-tanim1/zerOxine/refs/heads/main/Assets/zerOxine.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "zerOxine maintenance mode"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Resource Nexus",
+      "short_name": "Resources",
+      "description": "Access knowledge sheets",
+      "url": "/#resources",
+      "icons": [
+        {
+          "src": "https://raw.githubusercontent.com/from-tanim1/zerOxine/refs/heads/main/Assets/zerOxine.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Team",
+      "short_name": "Team",
+      "description": "Meet the minds",
+      "url": "/#team"
+    }
+  ],
+  "categories": ["education", "productivity", "utilities"],
+  "lang": "en",
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "edge_side_panel": {
+    "preferred_width": 400
+  }
 }
