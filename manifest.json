@@ -2,7 +2,7 @@
   "name": "zerOxine - Evolution in progress",
   "short_name": "zerOxine",
   "description": "Undergoing quantum infrastructure upgrade — core knowledge nodes remain accessible.",
-  "start_url": "zeroxine.vercel.app",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#0a0a0f",
   "theme_color": "#00ffcc",
