@@ -1,0 +1,23 @@
+{
+  "name": "zerOxine - Evolution in progress",
+  "short_name": "zerOxine",
+  "description": "Undergoing quantum infrastructure upgrade — core knowledge nodes remain accessible.",
+  "start_url": "zeroxine.vercel.app",
+  "display": "standalone",
+  "background_color": "#0a0a0f",
+  "theme_color": "#00ffcc",
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/from-tanim1/zeroxine1/refs/heads/main/Resources/Web/20260223_110721.png?token=GHSAT0AAAAAADWIH22JXMM7JOWRMBCL754C2M6HOMQ",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://raw.githubusercontent.com/from-tanim1/zeroxine1/refs/heads/main/Resources/Web/20260223_110721.png?token=GHSAT0AAAAAADWIH22JXMM7JOWRMBCL754C2M6HOMQ",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
