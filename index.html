@@ -16,7 +16,7 @@
     <!-- Microsoft Tiles -->
     <meta name="msapplication-TileColor" content="#00ffcc">
     <meta name="msapplication-TileImage" content="https://raw.githubusercontent.com/from-tanim1/zerOxine/refs/heads/main/Assets/zerOxine.png">
-    <meta name="theme-color" content="#00ffcc">
+    <meta name="theme-color" content="#0a0a0f">
     
     <!-- Meta tags for SEO -->
     <meta name="description" content="zerOxine - Quantum knowledge infrastructure undergoing evolution. Core knowledge nodes remain accessible.">
@@ -30,6 +30,11 @@
     <meta property="og:url" content="https://zeroxine.dev">
     <meta name="twitter:card" content="summary_large_image">
 
+    <!-- Preload critical assets -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
     <!-- Favicon -->
     <link rel="icon" href="Assets/zerOxine.png" type="image/x-icon">
     
@@ -45,7 +50,9 @@
         :root {
             --primary: #00ffcc;
             --primary-dark: #00cca3;
+            --primary-rgb: 0, 255, 204;
             --accent: #7000ff;
+            --accent-rgb: 112, 0, 255;
             --accent-glow: rgba(112, 0, 255, 0.5);
             --bg: #0a0a0f;
             --surface: #111116;
@@ -54,10 +61,19 @@
             --text-secondary: #b0b0c0;
             --glass: rgba(255, 255, 255, 0.03);
             --glass-border: rgba(255, 255, 255, 0.05);
-            --gradient-1: linear-gradient(135deg, #00ffcc, #7000ff);
+            --gradient-1: linear-gradient(135deg, var(--primary), var(--accent));
             --gradient-2: linear-gradient(45deg, #0a0a0f, #1a1a24);
             --error: #ff4757;
             --success: #00ff88;
+            --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --shadow-glow: 0 0 30px rgba(var(--primary-rgb), 0.3);
+            --shadow-card: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 40px;
         }
 
         body {
@@ -68,9 +84,11 @@
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* animated background grid */
+        /* Enhanced animated background */
         body::before {
             content: '';
             position: fixed;
@@ -81,44 +99,73 @@
             background-image: 
                 linear-gradient(var(--glass-border) 1px, transparent 1px),
                 linear-gradient(90deg, var(--glass-border) 1px, transparent 1px);
-            background-size: 50px 50px;
-            mask: radial-gradient(circle at 50% 50%, black, transparent 80%);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(circle at 50% 50%, black 30%, transparent 70%);
+            -webkit-mask-image: radial-gradient(circle at 50% 50%, black 30%, transparent 70%);
             pointer-events: none;
             z-index: 0;
+            animation: gridShift 20s linear infinite;
         }
 
-        /* floating orbs */
+        @keyframes gridShift {
+            0%, 100% { background-position: 0 0; }
+            50% { background-position: 30px 30px; }
+        }
+
+        /* Enhanced floating orbs */
         .orb {
             position: fixed;
-            width: 300px;
-            height: 300px;
             border-radius: 50%;
-            background: var(--accent);
-            filter: blur(100px);
-            opacity: 0.15;
-            animation: float 20s infinite ease-in-out;
+            filter: blur(120px);
+            opacity: 0.12;
             z-index: 0;
+            pointer-events: none;
         }
 
         .orb-1 {
-            top: -100px;
-            right: -100px;
+            top: -150px;
+            right: -150px;
+            width: 500px;
+            height: 500px;
             background: var(--primary);
-            animation-delay: -5s;
+            animation: floatOrb1 25s infinite ease-in-out;
         }
 
         .orb-2 {
-            bottom: -100px;
-            left: -100px;
+            bottom: -150px;
+            left: -150px;
+            width: 600px;
+            height: 600px;
             background: var(--accent);
-            animation-delay: -10s;
-            width: 400px;
-            height: 400px;
+            animation: floatOrb2 30s infinite ease-in-out;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(30px, 30px) scale(1.1); }
+        .orb-3 {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            opacity: 0.08;
+            animation: floatOrb3 20s infinite ease-in-out;
+        }
+
+        @keyframes floatOrb1 {
+            0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            33% { transform: translate(50px, 30px) scale(1.1) rotate(120deg); }
+            66% { transform: translate(-20px, -40px) scale(0.9) rotate(240deg); }
+        }
+
+        @keyframes floatOrb2 {
+            0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            33% { transform: translate(-40px, -20px) scale(1.15) rotate(-120deg); }
+            66% { transform: translate(30px, 50px) scale(0.85) rotate(-240deg); }
+        }
+
+        @keyframes floatOrb3 {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.2) rotate(180deg); }
         }
 
         .wrapper {
@@ -129,78 +176,131 @@
             padding: 0 24px;
         }
 
-        /* offline indicator */
+        /* Enhanced offline indicator */
         .offline-indicator {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 24px;
+            right: 24px;
             background: rgba(255, 71, 87, 0.95);
             color: white;
-            padding: 12px 24px;
-            border-radius: 40px;
-            backdrop-filter: blur(10px);
+            padding: 14px 24px;
+            border-radius: 50px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 71, 87, 0.3);
             z-index: 1000;
             transform: translateY(150px);
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 10px 30px rgba(255, 71, 87, 0.3);
+            opacity: 0;
+            transition: all 0.4s var(--transition-bounce);
+            box-shadow: 0 10px 40px rgba(255, 71, 87, 0.4);
             font-weight: 600;
+            font-size: 0.9rem;
             display: flex;
             align-items: center;
             gap: 10px;
+            pointer-events: none;
         }
 
         body.offline .offline-indicator {
             transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
         }
 
-        /* update notification */
+        .offline-dot {
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Enhanced update notification */
         .update-notification {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--surface);
+            top: 24px;
+            right: 24px;
+            background: rgba(17, 17, 22, 0.98);
             border: 1px solid var(--primary);
             border-radius: 20px;
-            padding: 16px 24px;
-            backdrop-filter: blur(20px);
+            padding: 20px 28px;
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
             z-index: 1000;
-            transform: translateX(150%);
-            transition: transform 0.3s ease;
-            box-shadow: 0 10px 40px rgba(0, 255, 204, 0.2);
-            max-width: 350px;
+            transform: translateX(calc(100% + 24px));
+            opacity: 0;
+            transition: all 0.4s var(--transition-bounce);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(var(--primary-rgb), 0.2);
+            max-width: 380px;
         }
 
         .update-notification.show {
             transform: translateX(0);
+            opacity: 1;
         }
 
         .update-content {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 16px;
+            flex-wrap: wrap;
         }
 
-        .update-content button {
+        .update-icon {
+            font-size: 1.5rem;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .update-text {
+            flex: 1;
+            font-weight: 500;
+            min-width: 0;
+        }
+
+        .update-btn {
             background: var(--primary);
             border: none;
             color: var(--bg);
-            padding: 8px 16px;
+            padding: 10px 20px;
             border-radius: 30px;
             font-weight: 600;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s var(--transition-smooth);
+            font-size: 0.9rem;
+            white-space: nowrap;
         }
 
-        .update-content button:hover {
+        .update-btn:hover {
             transform: scale(1.05);
-            box-shadow: 0 0 20px var(--primary);
+            box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.6);
+            background: white;
         }
 
-        /* maintenance header with glassmorphism */
+        .update-dismiss {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 4px;
+            transition: color 0.3s;
+        }
+
+        .update-dismiss:hover {
+            color: var(--text);
+        }
+
+        /* Enhanced maintenance header */
         .maintenance-header {
             text-align: center;
-            padding: 120px 20px 80px;
+            padding: clamp(80px, 15vh, 120px) 20px clamp(40px, 8vh, 80px);
             position: relative;
         }
 
@@ -208,18 +308,40 @@
             display: inline-flex;
             align-items: center;
             gap: 12px;
-            background: rgba(255, 71, 87, 0.1);
-            border: 1px solid rgba(255, 71, 87, 0.3);
-            backdrop-filter: blur(10px);
-            padding: 8px 24px 8px 20px;
+            background: rgba(255, 71, 87, 0.08);
+            border: 1px solid rgba(255, 71, 87, 0.2);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 10px 28px 10px 20px;
             border-radius: 60px;
             margin-bottom: 40px;
+            animation: fadeInUp 0.6s var(--transition-smooth) forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #ff4757;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+            box-shadow: 0 0 10px #ff4757;
         }
 
         .status-tag {
             background: #ff4757;
             color: white;
-            padding: 4px 12px;
+            padding: 4px 14px;
             border-radius: 30px;
             font-size: 0.75rem;
             font-weight: 700;
@@ -233,101 +355,47 @@
             font-weight: 500;
         }
 
-        .glitch-wrapper {
-            position: relative;
-            display: inline-block;
-        }
-
         .maintenance-header h1 {
-            font-size: clamp(4rem, 15vw, 7rem);
-            font-weight: 800;
+            font-size: clamp(4rem, 15vw, 8rem);
+            font-weight: 900;
             letter-spacing: -4px;
-            margin: 0 0 20px;
+            margin: 0 0 24px;
             background: var(--gradient-1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             position: relative;
-            text-shadow: 0 0 30px rgba(0, 255, 204, 0.3);
-            animation: glitch 10s infinite;
-        }
-
-        @keyframes glitch {
-            0%, 100% { transform: skew(0deg); }
-            96% { transform: skew(0deg); }
-            97% { transform: skew(2deg); }
-            98% { transform: skew(-2deg); }
-            99% { transform: skew(0deg); }
-        }
-
-        .maintenance-header h1::before,
-        .maintenance-header h1::after {
-            content: 'zerOxine';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--gradient-1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .maintenance-header h1::before {
-            animation: glitch-left 4s infinite;
-            color: #ff00ff;
-            -webkit-text-fill-color: #ff00ff;
-            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
-            transform: translate(-2px, -2px);
-            opacity: 0.8;
-        }
-
-        .maintenance-header h1::after {
-            animation: glitch-right 4s infinite;
-            color: #00ffff;
-            -webkit-text-fill-color: #00ffff;
-            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
-            transform: translate(2px, 2px);
-            opacity: 0.8;
-        }
-
-        @keyframes glitch-left {
-            0%, 100% { transform: translate(-2px, -2px); }
-            95% { transform: translate(-2px, -2px); }
-            96% { transform: translate(-4px, -3px); }
-            97% { transform: translate(-1px, -1px); }
-        }
-
-        @keyframes glitch-right {
-            0%, 100% { transform: translate(2px, 2px); }
-            95% { transform: translate(2px, 2px); }
-            96% { transform: translate(4px, 3px); }
-            97% { transform: translate(1px, 1px); }
+            animation: fadeInUp 0.6s var(--transition-smooth) 0.1s both;
         }
 
         .lead-text {
-            font-size: 1.5rem;
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
             color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto 20px;
-            backdrop-filter: blur(10px);
-            padding: 20px;
-            border-radius: 20px;
+            max-width: 650px;
+            margin: 0 auto 24px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 24px;
+            border-radius: 24px;
             background: rgba(255,255,255,0.02);
             border: 1px solid var(--glass-border);
+            animation: fadeInUp 0.6s var(--transition-smooth) 0.2s both;
+            line-height: 1.7;
         }
 
         .countdown-pulse {
             display: inline-flex;
             align-items: center;
             gap: 12px;
-            background: rgba(0,255,204,0.1);
-            border: 1px solid rgba(0,255,204,0.2);
-            padding: 12px 28px;
+            background: rgba(var(--primary-rgb), 0.08);
+            border: 1px solid rgba(var(--primary-rgb), 0.2);
+            padding: 14px 32px;
             border-radius: 50px;
-            margin-top: 20px;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            animation: fadeInUp 0.6s var(--transition-smooth) 0.3s both;
+            font-weight: 500;
+            color: var(--primary);
         }
 
         .pulse-dot {
@@ -336,6 +404,7 @@
             background: var(--primary);
             border-radius: 50%;
             animation: pulse 1.5s infinite;
+            box-shadow: 0 0 20px var(--primary);
         }
 
         @keyframes pulse {
@@ -343,25 +412,26 @@
             50% { opacity: 0.3; transform: scale(0.8); }
         }
 
-        /* pdf section - modern cards */
+        /* Enhanced PDF section */
         .pdf-section {
             margin: 80px 0;
             scroll-margin-top: 40px;
+            animation: fadeInUp 0.8s var(--transition-smooth) 0.4s both;
         }
 
         .section-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 40px;
+            margin-bottom: 48px;
             flex-wrap: wrap;
             gap: 20px;
         }
 
         .section-header h2 {
-            font-size: 2.8rem;
-            font-weight: 600;
-            background: linear-gradient(135deg, #fff, #b0b0ff);
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff 0%, #b0b0ff 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -373,45 +443,64 @@
             padding: 10px 24px;
             border-radius: 40px;
             border: 1px solid var(--glass-border);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             color: var(--primary);
             font-weight: 600;
+            font-size: 0.9rem;
         }
 
         .pdf-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
         }
 
         .pdf-card {
             background: var(--surface);
             border: 1px solid var(--glass-border);
-            border-radius: 32px;
+            border-radius: 28px;
             padding: 32px;
-            backdrop-filter: blur(20px);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            transition: all 0.5s var(--transition-smooth);
             position: relative;
             overflow: hidden;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
         }
 
         .pdf-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             background: var(--gradient-1);
             opacity: 0;
-            transition: opacity 0.4s;
+            transition: opacity 0.5s var(--transition-smooth);
             z-index: 0;
+            border-radius: 28px;
+        }
+
+        .pdf-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            transition: left 0.5s var(--transition-smooth);
+        }
+
+        .pdf-card:hover::after {
+            left: 100%;
         }
 
         .pdf-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            border-color: transparent;
-            box-shadow: 0 20px 40px rgba(0,255,204,0.2);
+            transform: translateY(-8px);
+            border-color: rgba(var(--primary-rgb), 0.3);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(var(--primary-rgb), 0.15);
         }
 
         .pdf-card:hover::before {
@@ -419,27 +508,39 @@
         }
 
         .card-icon {
-            font-size: 3rem;
+            font-size: 2.8rem;
             margin-bottom: 20px;
-            filter: drop-shadow(0 0 20px var(--primary));
+            position: relative;
+            z-index: 1;
+            transition: transform 0.3s var(--transition-bounce);
+        }
+
+        .pdf-card:hover .card-icon {
+            transform: scale(1.1) rotate(-5deg);
         }
 
         .pdf-card h3 {
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 15px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 12px;
             color: var(--primary);
             position: relative;
             z-index: 1;
+            transition: color 0.3s;
+        }
+
+        .pdf-card:hover h3 {
+            color: white;
         }
 
         .pdf-card p {
             color: var(--text-secondary);
-            margin-bottom: 25px;
-            font-size: 1rem;
+            margin-bottom: 24px;
+            font-size: 0.95rem;
             line-height: 1.7;
             position: relative;
             z-index: 1;
+            flex: 1;
         }
 
         .card-footer {
@@ -448,37 +549,65 @@
             justify-content: space-between;
             position: relative;
             z-index: 1;
+            margin-top: auto;
         }
 
         .btn-download {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             color: var(--primary);
             text-decoration: none;
             font-weight: 600;
-            padding: 12px 0;
-            transition: 0.3s;
-            border-bottom: 2px solid transparent;
+            padding: 10px 20px;
+            transition: all 0.3s var(--transition-smooth);
+            border-radius: 30px;
+            background: rgba(var(--primary-rgb), 0.05);
+            border: 1px solid rgba(var(--primary-rgb), 0.2);
+            font-size: 0.9rem;
         }
 
         .btn-download:hover {
-            gap: 15px;
+            gap: 12px;
             color: white;
-            border-bottom-color: var(--primary);
+            background: rgba(var(--primary-rgb), 0.15);
+            border-color: var(--primary);
+            box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.3);
+        }
+
+        .btn-download .arrow {
+            transition: transform 0.3s var(--transition-smooth);
+            display: inline-block;
+        }
+
+        .btn-download:hover .arrow {
+            transform: translateX(4px);
         }
 
         .file-meta {
             color: #4f4f6a;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             background: rgba(255,255,255,0.03);
-            padding: 6px 12px;
+            padding: 6px 14px;
             border-radius: 30px;
+            border: 1px solid var(--glass-border);
         }
 
-        /* team section - futuristic with ALWAYS COLORFUL images */
+        /* Coming soon tag */
+        .coming-soon-tag {
+            display: inline-block;
+            background: rgba(var(--accent-rgb), 0.15);
+            color: #b8a0ff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 1px solid rgba(var(--accent-rgb), 0.3);
+        }
+
+        /* Enhanced team section */
         .team-section {
-            margin: 120px 0 60px;
+            margin: 100px 0 60px;
             scroll-margin-top: 40px;
         }
 
@@ -488,97 +617,107 @@
         }
 
         .team-header h2 {
-            font-size: 2.5rem;
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            font-weight: 700;
             color: transparent;
-            -webkit-text-stroke: 2px var(--accent);
-            text-stroke: 2px var(--accent);
-            letter-spacing: 2px;
+            -webkit-text-stroke: 1.5px var(--accent);
+            text-stroke: 1.5px var(--accent);
+            letter-spacing: 1px;
         }
 
         .team-grid {
             display: flex;
             justify-content: center;
-            gap: 60px;
+            gap: 40px;
             flex-wrap: wrap;
         }
 
         .profile-card {
             background: var(--surface);
             border: 1px solid var(--glass-border);
-            border-radius: 40px;
-            padding: 40px 40px 50px;
-            width: 340px;
+            border-radius: 36px;
+            padding: 36px 32px 44px;
+            width: 320px;
             text-align: center;
-            backdrop-filter: blur(20px);
-            transition: 0.4s;
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            transition: all 0.5s var(--transition-smooth);
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        .profile-card::after {
+        .profile-card::before {
             content: '';
             position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 50% 50%, var(--accent-glow), transparent 70%);
+            inset: 0;
+            background: radial-gradient(circle at 50% 0%, var(--accent-glow), transparent 70%);
             opacity: 0;
-            transition: 0.6s;
-            z-index: 0;
+            transition: opacity 0.5s var(--transition-smooth);
+            border-radius: 36px;
         }
 
-        .profile-card:hover::after {
-            opacity: 0.1;
+        .profile-card:hover::before {
+            opacity: 0.15;
         }
 
         .profile-card:hover {
-            transform: scale(1.05);
-            border-color: var(--accent);
-            box-shadow: 0 0 50px rgba(112, 0, 255, 0.3);
+            transform: translateY(-12px);
+            border-color: rgba(var(--accent-rgb), 0.4);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6), 0 0 60px rgba(var(--accent-rgb), 0.2);
         }
 
         .avatar-frame {
-            width: 150px;
-            height: 150px;
-            margin: 0 auto 25px;
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 24px;
             position: relative;
-            border-radius: 30px;
+            border-radius: 28px;
             overflow: hidden;
             border: 3px solid transparent;
             background: var(--gradient-1);
             padding: 3px;
-            box-shadow: 0 0 30px rgba(0, 255, 204, 0.3);
-            animation: frame-pulse 3s infinite alternate;
+            box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.3);
+            animation: frameGlow 4s infinite alternate;
+            transition: all 0.4s var(--transition-smooth);
         }
 
-        @keyframes frame-pulse {
-            0% { box-shadow: 0 0 20px rgba(0, 255, 204, 0.3); }
-            100% { box-shadow: 0 0 40px rgba(112, 0, 255, 0.6); }
+        @keyframes frameGlow {
+            0% { box-shadow: 0 0 20px rgba(var(--primary-rgb), 0.3); }
+            100% { box-shadow: 0 0 40px rgba(var(--accent-rgb), 0.6); }
+        }
+
+        .profile-card:hover .avatar-frame {
+            transform: scale(1.05);
+            box-shadow: 0 0 60px rgba(var(--primary-rgb), 0.5);
         }
 
         .avatar-frame img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 28px;
-            filter: brightness(1.05) contrast(1.1);
-            transition: 0.5s;
+            border-radius: 26px;
+            transition: 0.5s var(--transition-smooth);
             display: block;
         }
 
         .profile-card:hover .avatar-frame img {
             transform: scale(1.08);
-            filter: brightness(1.2) contrast(1.2) drop-shadow(0 0 15px var(--primary));
+            filter: brightness(1.1) contrast(1.1);
         }
 
         .profile-card h3 {
-            font-size: 2rem;
-            font-weight: 600;
+            font-size: 1.8rem;
+            font-weight: 700;
             margin-bottom: 8px;
             background: linear-gradient(135deg, #fff, #d0d0ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 1;
         }
 
         .profile-role {
@@ -586,7 +725,11 @@
             font-weight: 600;
             margin-bottom: 20px;
             letter-spacing: 1px;
-            text-shadow: 0 0 10px var(--primary);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 0 15px rgba(var(--primary-rgb), 0.5);
         }
 
         .github-link {
@@ -594,64 +737,76 @@
             align-items: center;
             gap: 10px;
             background: rgba(255,255,255,0.03);
-            padding: 12px 28px;
+            padding: 12px 24px;
             border-radius: 40px;
             color: var(--text-secondary);
             text-decoration: none;
             border: 1px solid var(--glass-border);
-            transition: 0.3s;
-            font-size: 0.95rem;
+            transition: all 0.3s var(--transition-smooth);
+            font-size: 0.9rem;
             position: relative;
-            z-index: 2;
+            z-index: 1;
+            font-weight: 500;
         }
 
         .github-link:hover {
             background: var(--accent);
             color: white;
             border-color: var(--accent);
-            box-shadow: 0 0 30px var(--accent-glow);
+            box-shadow: 0 0 40px var(--accent-glow);
             transform: translateY(-2px);
         }
 
-        /* PWA install button */
+        /* Enhanced install button */
+        .install-container {
+            display: flex;
+            justify-content: center;
+            margin: 20px auto 40px;
+        }
+
         .install-btn {
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
-            background: linear-gradient(135deg, rgba(0,255,204,0.15), rgba(112,0,255,0.15));
-            border: 2px solid var(--primary);
-            backdrop-filter: blur(10px);
-            padding: 16px 40px;
+            background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.1), rgba(var(--accent-rgb), 0.1));
+            border: 2px solid rgba(var(--primary-rgb), 0.3);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 16px 36px;
             border-radius: 60px;
-            margin: 20px auto 40px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
             color: var(--primary);
             cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 0 30px rgba(0,255,204,0.2);
-            width: fit-content;
-            border: 1px solid rgba(0,255,204,0.3);
+            transition: all 0.4s var(--transition-smooth);
+            box-shadow: 0 0 30px rgba(var(--primary-rgb), 0.15);
             position: relative;
             z-index: 10;
+            animation: fadeInUp 0.6s var(--transition-smooth) 0.35s both;
         }
 
         .install-btn:hover {
-            background: linear-gradient(135deg, rgba(0,255,204,0.25), rgba(112,0,255,0.25));
-            box-shadow: 0 0 50px rgba(0,255,204,0.4);
-            transform: translateY(-3px);
+            background: linear-gradient(135deg, rgba(var(--primary-rgb), 0.2), rgba(var(--accent-rgb), 0.2));
+            box-shadow: 0 0 50px rgba(var(--primary-rgb), 0.3);
+            transform: translateY(-4px);
             color: white;
             border-color: var(--primary);
+        }
+
+        .install-btn:active {
+            transform: translateY(-1px);
+            transition: transform 0.1s;
         }
 
         .install-btn.hidden {
             display: none;
         }
 
+        /* Enhanced footer */
         .footer-note {
             text-align: center;
-            padding: 40px 0 30px;
+            padding: 48px 0 32px;
             color: #3f3f55;
             font-size: 0.9rem;
             border-top: 1px solid rgba(255,255,255,0.03);
@@ -659,15 +814,52 @@
             position: relative;
         }
 
-        .cyber-line {
+        .footer-note::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
             height: 2px;
             background: var(--gradient-1);
-            width: 100%;
-            opacity: 0.3;
-            margin: 40px 0;
+            opacity: 0.5;
         }
 
-        /* loading animation */
+        .footer-note span {
+            display: block;
+        }
+
+        .footer-note .footer-sub {
+            font-size: 0.8rem;
+            opacity: 0.5;
+            margin-top: 6px;
+        }
+
+        .cyber-line {
+            height: 1px;
+            background: var(--gradient-1);
+            width: 100%;
+            opacity: 0.2;
+            margin: 48px 0;
+            position: relative;
+        }
+
+        .cyber-line::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--primary);
+            animation: pulse 2s infinite;
+        }
+
+        /* Enhanced loading bar */
         .loading-bar {
             position: fixed;
             top: 0;
@@ -676,24 +868,139 @@
             background: var(--gradient-1);
             width: 0%;
             z-index: 9999;
-            transition: width 0.3s ease;
+            transition: width 0.4s var(--transition-smooth);
+            box-shadow: 0 0 20px rgba(var(--primary-rgb), 0.5);
         }
 
-        /* responsive */
-        @media (max-width: 700px) {
+        .loading-bar.complete {
+            opacity: 0;
+            transition: opacity 0.5s var(--transition-smooth);
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--surface);
+            border: 1px solid var(--primary);
+            color: var(--text);
+            padding: 14px 28px;
+            border-radius: 40px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 2000;
+            transition: transform 0.4s var(--transition-bounce);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(var(--primary-rgb), 0.2);
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Responsive refinements */
+        @media (max-width: 768px) {
+            .wrapper {
+                padding: 0 16px;
+            }
+
             .maintenance-header h1 {
-                font-size: 4rem;
+                font-size: 3.5rem;
                 letter-spacing: -2px;
             }
+
             .lead-text {
-                font-size: 1.2rem;
+                padding: 20px;
+                font-size: 1rem;
             }
+
             .section-header h2 {
-                font-size: 2rem;
+                font-size: 1.8rem;
             }
+
+            .pdf-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
             .profile-card {
                 width: 100%;
-                max-width: 340px;
+                max-width: 320px;
+                padding: 28px 24px 36px;
+            }
+
+            .team-grid {
+                gap: 24px;
+            }
+
+            .offline-indicator {
+                bottom: 16px;
+                right: 16px;
+                left: 16px;
+                justify-content: center;
+                font-size: 0.85rem;
+                padding: 12px 20px;
+            }
+
+            .update-notification {
+                top: 16px;
+                right: 16px;
+                left: 16px;
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .maintenance-header h1 {
+                font-size: 2.8rem;
+            }
+
+            .status-wrapper {
+                flex-wrap: wrap;
+                justify-content: center;
+                padding: 10px 20px;
+            }
+
+            .card-footer {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg: #f5f5f7;
+                --surface: #ffffff;
+                --surface-light: #e8e8ed;
+                --text: #1a1a2e;
+                --text-secondary: #6e6e7a;
+                --glass-border: rgba(0, 0, 0, 0.08);
+            }
+
+            .orb {
+                opacity: 0.06;
+            }
+
+            .maintenance-header h1 {
+                text-shadow: 0 0 40px rgba(var(--primary-rgb), 0.15);
             }
         }
     </style>
@@ -703,254 +1010,388 @@
     <div class="loading-bar" id="loadingBar"></div>
 
     <!-- Floating orbs -->
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
+    <div class="orb orb-1" aria-hidden="true"></div>
+    <div class="orb orb-2" aria-hidden="true"></div>
+    <div class="orb orb-3" aria-hidden="true"></div>
 
     <!-- Offline indicator -->
-    <div class="offline-indicator">
-        <span>📴</span>
-        <span>You're offline - Some content may be unavailable</span>
+    <div class="offline-indicator" role="alert" aria-live="polite">
+        <span class="offline-dot" aria-hidden="true"></span>
+        <span>You're offline — cached content available</span>
     </div>
 
     <!-- Update notification -->
-    <div class="update-notification" id="updateNotification">
+    <div class="update-notification" id="updateNotification" role="alert" aria-live="polite">
+        <button class="update-dismiss" onclick="dismissUpdate()" aria-label="Dismiss update notification">&times;</button>
         <div class="update-content">
-            <span>🔄</span>
-            <span>New version available!</span>
-            <button onclick="updateApp()">Update</button>
+            <span class="update-icon" aria-hidden="true">🔄</span>
+            <span class="update-text">New version available!</span>
+            <button class="update-btn" onclick="updateApp()">Update Now</button>
         </div>
     </div>
 
+    <!-- Toast container -->
+    <div class="toast" id="toast" aria-live="polite"></div>
+
     <div class="wrapper">
-        <!-- maintenance header with glitch effect -->
-        <div class="maintenance-header">
-            
-            
-            <div class="glitch-wrapper">
-                <h1>zerOxine</h1>
+        <!-- Maintenance header -->
+        <header class="maintenance-header">
+            <div class="status-wrapper">
+                <span class="status-dot" aria-hidden="true"></span>
+                <span class="status-tag">Maintenance</span>
+                <span class="status-text">Core systems evolving</span>
             </div>
             
-            <p class="lead-text">undergoing quantum infrastructure upgrade — core knowledge nodes remain accessible</p>
+            <h1>zerOxine</h1>
             
+            <p class="lead-text">Undergoing quantum infrastructure upgrade — core knowledge nodes remain accessible during the evolution.</p>
             
-        </div>
+            <div class="countdown-pulse">
+                <span class="pulse-dot" aria-hidden="true"></span>
+                <span>Systems online — serving cached resources</span>
+            </div>
+        </header>
 
         <!-- PWA install button -->
-        <div style="display: flex; justify-content: center;">
-            <button id="installButton" class="install-btn hidden">
-                <span>⬇️</span> Install zerOxine as App <span>✨</span>
+        <div class="install-container">
+            <button id="installButton" class="install-btn hidden" aria-label="Install zerOxine as an app">
+                <span aria-hidden="true">📲</span> 
+                Install zerOxine 
+                <span aria-hidden="true">✨</span>
             </button>
         </div>
 
-        <!-- pdf resources section -->
-        <section class="pdf-section" id="resources">
+        <!-- PDF resources section -->
+        <section class="pdf-section" id="resources" aria-labelledby="resources-heading">
             <div class="section-header">
-                <h2>resource nexus</h2>
-                <span class="section-badge">📄 4 active nexus</span>
+                <h2 id="resources-heading">Resource Nexus</h2>
+                <span class="section-badge" aria-label="4 active resources">
+                    <span aria-hidden="true">📄</span> 4 Active Nodes
+                </span>
             </div>
 
             <div class="pdf-grid">
-                <!-- physics card -->
-                <div class="pdf-card">
-                    <div class="card-icon">⚡</div>
-                    <h3>Physics · final</h3>
-                    <p>complete electromagnetism, optics & modern physics — annotated solutions & examiner's notes.</p>
+                <!-- Physics card -->
+                <article class="pdf-card" tabindex="0">
+                    <div class="card-icon" aria-hidden="true">⚡</div>
+                    <h3>Physics</h3>
+                    <p>Complete electromagnetism, optics &amp; modern physics — annotated solutions with examiner's insights.</p>
                     <div class="card-footer">
-                        <a href="https://drive.google.com/file/d/1WrGiyAVu0Qhlo8KJFSpRYvD6bpc2fmMe/view?usp=drivesdk" class="btn-download" target="_blank" rel="noopener">
-                            access <span>→</span>
+                        <a href="https://drive.google.com/file/d/1WrGiyAVu0Qhlo8KJFSpRYvD6bpc2fmMe/view?usp=drivesdk" 
+                           class="btn-download" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           aria-label="Download Physics PDF">
+                            Access <span class="arrow" aria-hidden="true">→</span>
                         </a>
-                        <span class="file-meta"></span>
+                        <span class="file-meta">PDF</span>
                     </div>
-                </div>
+                </article>
 
-                <!-- mathematics card -->
-                <div class="pdf-card">
-                    <div class="card-icon">📐</div>
+                <!-- Mathematics card -->
+                <article class="pdf-card" tabindex="0">
+                    <div class="card-icon" aria-hidden="true">📐</div>
                     <h3>Mathematics</h3>
-                    <p>advanced calculus, linear algebra & differential equations — with stepwise answer keys.</p>
+                    <p>Advanced calculus, linear algebra &amp; differential equations — stepwise answer keys included.</p>
                     <div class="card-footer">
-                        <a href="#" class="btn-download preview-link">preview <span>→</span></a>
-                        <span class="file-meta"></span>
+                        <button class="btn-download preview-link" aria-label="Preview Mathematics resource">
+                            Preview <span class="arrow" aria-hidden="true">→</span>
+                        </button>
+                        <span class="coming-soon-tag">Coming Soon</span>
                     </div>
-                </div>
+                </article>
 
-                <!-- chemistry card -->
-                <div class="pdf-card">
-                    <div class="card-icon">🧪</div>
+                <!-- Chemistry card -->
+                <article class="pdf-card" tabindex="0">
+                    <div class="card-icon" aria-hidden="true">🧪</div>
                     <h3>Chemistry</h3>
-                    <p>reaction mechanisms, named reactions, spectroscopy problems & solution bank.</p>
+                    <p>Reaction mechanisms, named reactions, spectroscopy problems &amp; comprehensive solution bank.</p>
                     <div class="card-footer">
-                        <a href="#" class="btn-download preview-link">preview <span>→</span></a>
-                        <span class="file-meta">PDF · 15 MB</span>
+                        <button class="btn-download preview-link" aria-label="Preview Chemistry resource">
+                            Preview <span class="arrow" aria-hidden="true">→</span>
+                        </button>
+                        <span class="coming-soon-tag">Coming Soon</span>
                     </div>
-                </div>
+                </article>
 
-                <!-- biology card -->
-                <div class="pdf-card">
-                    <div class="card-icon">🧬</div>
-                    <h3>Biology · core</h3>
-                    <p>molecular biology, genetics & metabolism diagrams — high-yield fact sheets.</p>
+                <!-- Biology card -->
+                <article class="pdf-card" tabindex="0">
+                    <div class="card-icon" aria-hidden="true">🧬</div>
+                    <h3>Biology</h3>
+                    <p>Molecular biology, genetics &amp; metabolism diagrams — high-yield fact sheets for quick revision.</p>
                     <div class="card-footer">
-                        <a href="#" class="btn-download preview-link">preview <span>→</span></a>
-                        <span class="file-meta"></span>
+                        <button class="btn-download preview-link" aria-label="Preview Biology resource">
+                            Preview <span class="arrow" aria-hidden="true">→</span>
+                        </button>
+                        <span class="coming-soon-tag">Coming Soon</span>
                     </div>
-                </div>
+                </article>
             </div>
         </section>
 
-        <div class="cyber-line"></div>
+        <div class="cyber-line" aria-hidden="true"></div>
 
-        <!-- team section -->
-        <section class="team-section" id="team">
+        <!-- Team section -->
+        <section class="team-section" id="team" aria-labelledby="team-heading">
             <div class="team-header">
-                <h2>The minds behind zerOxine</h2>
+                <h2 id="team-heading">The Minds Behind zerOxine</h2>
             </div>
 
             <div class="team-grid">
-                <div class="profile-card">
+                <article class="profile-card" tabindex="0">
                     <div class="avatar-frame">
-                        <img src="https://raw.githubusercontent.com/from-tanim1/zerOxine/refs/heads/main/Resources/Web/20260224_222312.png" alt="Tanim — founder" loading="lazy">
+                        <img src="https://raw.githubusercontent.com/from-tanim1/zerOxine/refs/heads/main/Resources/Web/20260224_222312.png" 
+                             alt="Tanim — Founder of zerOxine" 
+                             loading="lazy"
+                             width="140"
+                             height="140">
                     </div>
-                    <h3> The Owner </h3>
-                    <div class="profile-role">Founder · vision</div>
-                    <a href="https://github.com/from-tanim" class="github-link" target="_blank" rel="noopener">
-                        <span>🐙</span> github.com/from-tanim
+                    <h3>The Owner</h3>
+                    <div class="profile-role">Founder · Vision</div>
+                    <a href="https://github.com/from-tanim" 
+                       class="github-link" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       aria-label="Visit Tanim's GitHub profile">
+                        <span aria-hidden="true">🐙</span> github.com/from-tanim
                     </a>
-                </div>
+                </article>
 
-                <div class="profile-card">
+                <article class="profile-card" tabindex="0">
                     <div class="avatar-frame">
-                        <img src="https://raw.githubusercontent.com/from-tanim1/zerOxine/refs/heads/main/Resources/Web/20260224_222312.png" alt="Lead developer" loading="lazy">
+                        <img src="https://raw.githubusercontent.com/from-tanim1/zerOxine/refs/heads/main/Resources/Web/20260224_222312.png" 
+                             alt="Lead Developer of zerOxine" 
+                             loading="lazy"
+                             width="140"
+                             height="140">
                     </div>
-                    <h3>Lead dev</h3>
-                    <div class="profile-role">SYSTEM ARCHITECT</div>
-                    <a href="https://github.com/from-tanim" class="github-link" target="_blank" rel="noopener">
-                        <span>⚡</span> github.com/from-tanim
+                    <h3>Lead Dev</h3>
+                    <div class="profile-role">System Architect</div>
+                    <a href="https://github.com/from-tanim" 
+                       class="github-link" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       aria-label="Visit Lead Developer's GitHub profile">
+                        <span aria-hidden="true">⚡</span> github.com/from-tanim
                     </a>
-                </div>
+                </article>
             </div>
         </section>
 
-        <!-- footer note -->
-        <div class="footer-note">
-            <span>✦ zerOxine core · Maintenance mode 2026 ✦</span><br>
-            <span style="font-size: 0.8rem; opacity: 0.5;">Decentralized knowledge · Coming back stronger</span>
-        </div>
+        <!-- Footer -->
+        <footer class="footer-note">
+            <span>✦ zerOxine Core · Maintenance Mode 2026 ✦</span>
+            <span class="footer-sub">Decentralized knowledge infrastructure · Evolving continuously</span>
+        </footer>
     </div>
 
     <script>
-        // Loading bar animation
+        // ============ ENHANCED FUNCTIONALITY ============
+
+        // Loading bar management
         const loadingBar = document.getElementById('loadingBar');
         
         function updateLoadingBar(progress) {
-            loadingBar.style.width = progress + '%';
+            if (!loadingBar) return;
+            loadingBar.style.width = Math.min(progress, 100) + '%';
+            
+            if (progress >= 100) {
+                setTimeout(() => {
+                    loadingBar.classList.add('complete');
+                }, 300);
+            }
         }
 
-        // Simulate page load progress
+        // Simulate realistic loading
         document.addEventListener('readystatechange', () => {
             if (document.readyState === 'interactive') {
-                updateLoadingBar(50);
+                updateLoadingBar(40);
+                
+                // Animate progress
+                let progress = 40;
+                const interval = setInterval(() => {
+                    progress += Math.random() * 15;
+                    if (progress >= 90) {
+                        progress = 90;
+                        clearInterval(interval);
+                    }
+                    updateLoadingBar(progress);
+                }, 200);
             } else if (document.readyState === 'complete') {
                 updateLoadingBar(100);
-                setTimeout(() => {
-                    loadingBar.style.opacity = '0';
-                }, 500);
             }
         });
+
+        // Toast notification system
+        function showToast(message, duration = 3000) {
+            const toast = document.getElementById('toast');
+            if (!toast) return;
+            
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, duration);
+        }
 
         // Preview links handler
         document.querySelectorAll('.preview-link').forEach(link => {
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const card = link.closest('.pdf-card');
-                const subject = card.querySelector('h3').textContent;
+                const subject = card?.querySelector('h3')?.textContent || 'Resource';
                 
                 // Visual feedback
-                link.style.opacity = '0.6';
                 link.style.transform = 'scale(0.95)';
+                link.style.opacity = '0.7';
                 setTimeout(() => {
-                    link.style.opacity = '1';
-                    link.style.transform = 'scale(1)';
+                    link.style.transform = '';
+                    link.style.opacity = '';
                 }, 200);
 
-                // Show coming soon message
-                alert(`📚 ${subject} preview coming soon!\nStay tuned for updates.`);
+                showToast(`📚 ${subject} preview coming soon! Stay tuned.`);
             });
         });
 
-        // --- PWA INSTALLATION LOGIC ---
+        // ============ PWA INSTALLATION LOGIC ============
         let deferredPrompt;
         const installButton = document.getElementById('installButton');
 
-        // Listen for beforeinstallprompt event
+        // Check if app is already installed
+        function checkInstalled() {
+            if (window.matchMedia('(display-mode: standalone)').matches || 
+                navigator.standalone) {
+                installButton?.classList.add('hidden');
+                return true;
+            }
+            return false;
+        }
+
+        // Listen for beforeinstallprompt
         window.addEventListener('beforeinstallprompt', (e) => {
+            if (checkInstalled()) return;
+            
             e.preventDefault();
             deferredPrompt = e;
-            installButton.classList.remove('hidden');
+            installButton?.classList.remove('hidden');
+            
+            // Track that install is available
+            console.log('📲 PWA install available');
         });
 
         // Handle install button click
-        installButton.addEventListener('click', async () => {
-            if (!deferredPrompt) return;
+        installButton?.addEventListener('click', async () => {
+            if (!deferredPrompt) {
+                showToast('⚠️ Installation not available right now');
+                return;
+            }
 
             installButton.classList.add('hidden');
             
             try {
                 await deferredPrompt.prompt();
                 const { outcome } = await deferredPrompt.userChoice;
-                console.log('Install outcome:', outcome);
+                
+                if (outcome === 'accepted') {
+                    showToast('✅ App installed successfully!');
+                    console.log('🎉 User accepted install');
+                } else {
+                    showToast('💡 You can install later from browser menu');
+                    console.log('❌ User dismissed install');
+                }
             } catch (error) {
                 console.error('Install error:', error);
+                showToast('⚠️ Installation failed. Please try again.');
             } finally {
                 deferredPrompt = null;
             }
         });
 
-        // Check if already installed
-        if (window.matchMedia('(display-mode: standalone)').matches) {
-            installButton.classList.add('hidden');
-        }
+        // Check if already installed on load
+        checkInstalled();
 
-        // --- SERVICE WORKER REGISTRATION ---
+        // Listen for app installed event
+        window.addEventListener('appinstalled', () => {
+            installButton?.classList.add('hidden');
+            deferredPrompt = null;
+            showToast('🎉 zerOxine installed successfully!');
+            console.log('✅ PWA installed');
+        });
+
+        // ============ SERVICE WORKER REGISTRATION ============
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/Assets/sw.js')
                     .then(registration => {
-                        console.log('✅ Service Worker registered');
+                        console.log('✅ Service Worker registered:', registration.scope);
 
                         // Check for updates
                         registration.addEventListener('updatefound', () => {
                             const newWorker = registration.installing;
+                            if (!newWorker) return;
                             
                             newWorker.addEventListener('statechange', () => {
                                 if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                                     // New version available
-                                    document.getElementById('updateNotification').classList.add('show');
+                                    document.getElementById('updateNotification')?.classList.add('show');
+                                    console.log('🔄 New version available');
                                 }
                             });
                         });
+
+                        // Periodic update checks
+                        setInterval(() => {
+                            registration.update().catch(() => {});
+                        }, 1000 * 60 * 60); // Check every hour
                     })
                     .catch(error => {
                         console.error('❌ Service Worker registration failed:', error);
                     });
             });
+
+            // Listen for controller change
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                console.log('🔄 Service Worker controller changed');
+            });
         }
 
         // Update app function
         window.updateApp = function() {
-            document.getElementById('updateNotification').classList.remove('show');
+            const notification = document.getElementById('updateNotification');
+            notification?.classList.remove('show');
+            
             if (navigator.serviceWorker.controller) {
                 navigator.serviceWorker.controller.postMessage({ type: 'SKIP_WAITING' });
             }
-            window.location.reload();
+            
+            // Reload after a short delay to allow skip waiting
+            setTimeout(() => {
+                window.location.reload();
+            }, 300);
         };
 
-        // Handle offline/online events
+        // Dismiss update notification
+        window.dismissUpdate = function() {
+            document.getElementById('updateNotification')?.classList.remove('show');
+        };
+
+        // ============ OFFLINE/ONLINE HANDLING ============
         function updateOnlineStatus() {
-            if (navigator.onLine) {
+            const wasOffline = document.body.classList.contains('offline');
+            const isOnline = navigator.onLine;
+            
+            if (isOnline) {
                 document.body.classList.remove('offline');
+                if (wasOffline) {
+                    showToast('🌐 Back online! Content refreshed.');
+                }
             } else {
                 document.body.classList.add('offline');
+                if (!wasOffline) {
+                    showToast('📴 You're offline — cached content available');
+                }
             }
         }
 
@@ -958,21 +1399,30 @@
         window.addEventListener('offline', updateOnlineStatus);
         updateOnlineStatus();
 
-        // Smooth scroll for anchor links
+        // ============ SMOOTH SCROLL FOR ANCHOR LINKS ============
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                
                 e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
+                const target = document.querySelector(href);
                 if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
+                    target.scrollIntoView({ 
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    
+                    // Update URL without jump
+                    history.pushState(null, null, href);
                 }
             });
         });
 
-        // Add animation on scroll
+        // ============ INTERSECTION OBSERVER FOR ANIMATIONS ============
         const observerOptions = {
             threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
+            rootMargin: '0px 0px -30px 0px'
         };
 
         const observer = new IntersectionObserver((entries) => {
@@ -980,39 +1430,42 @@
                 if (entry.isIntersecting) {
                     entry.target.style.opacity = '1';
                     entry.target.style.transform = 'translateY(0)';
+                    observer.unobserve(entry.target);
                 }
             });
         }, observerOptions);
 
-        document.querySelectorAll('.pdf-card, .profile-card').forEach(el => {
+        // Observe cards for entrance animations
+        document.querySelectorAll('.pdf-card, .profile-card').forEach((el, index) => {
             el.style.opacity = '0';
-            el.style.transform = 'translateY(20px)';
-            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = `opacity 0.6s var(--transition-smooth) ${index * 0.1}s, transform 0.6s var(--transition-smooth) ${index * 0.1}s`;
             observer.observe(el);
         });
 
-        
+        // ============ KEYBOARD NAVIGATION ENHANCEMENTS ============
+        document.querySelectorAll('.pdf-card, .profile-card').forEach(card => {
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    const link = card.querySelector('a, button');
+                    if (link) link.click();
+                }
+            });
+        });
 
-       
-    </script>
+        // ============ PERFORMANCE: LAZY LOAD IMAGES ============
+        if ('loading' in HTMLImageElement.prototype) {
+            document.querySelectorAll('img[loading="lazy"]').forEach(img => {
+                img.src = img.dataset.src || img.src;
+            });
+        }
 
-    <!-- Service Worker Registration Fallback -->
-    <script>
-        // Ensure service worker is registered even if the main registration fails
-        (function registerServiceWorker() {
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/Assets/sw.js').catch(error => {
-                    console.warn('Service worker registration warning:', error);
-                });
-            }
-        })();
+        // ============ INITIALIZATION LOG ============
+        console.log('🚀 zerOxine maintenance page initialized');
+        console.log('📦 Cached resources available');
+        console.log('🔧 Service Worker:', 'serviceWorker' in navigator ? 'Supported' : 'Not supported');
+        console.log('📲 PWA Install:', deferredPrompt ? 'Available' : 'Check conditions');
     </script>
-</body>  
+</body>
 </html>
-    
-    
-    
-    
-    
-    
-    
