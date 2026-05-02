@@ -994,18 +994,9 @@
             observer.observe(el);
         });
 
-        // Dynamic countdown (optional)
-        function updateCountdown() {
-            const countdownElement = document.querySelector('.countdown-pulse span:last-child');
-            if (!countdownElement) return;
+        
 
-            // This is just for demonstration - replace with actual countdown logic
-            const hours = 48;
-            const minutes = 23;
-            countdownElement.textContent = `estimated completion: ${hours}h · ${minutes}m`;
-        }
-
-        setInterval(updateCountdown, 60000); // Update every minute
+       
     </script>
 
     <!-- Service Worker Registration Fallback -->
